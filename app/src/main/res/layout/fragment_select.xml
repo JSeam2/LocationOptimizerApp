@@ -1,13 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.locationoptimizer.SelectFragment">
+             tools:context="com.locationoptimizer.SelectFragment"
+            android:useDefaultMargins="true"
+            android:columnCount="2">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
 
-</FrameLayout>
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
+            android:checked="false"
+            android:elegantTextHeight="true"
+            android:text="@string/tb1"
+            android:textOff="@string/tb1"
+            android:textOn="@string/tb1"/>
+
+        <ToggleButton
+            android:id="@+id/toggleButton2"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
+            android:checked="false"
+            android:elegantTextHeight="true"
+            android:text="@string/tb2"
+            android:textOff="@string/tb2"
+            android:textOn="@string/tb2"
+
+            />
+
+        <ToggleButton
+            android:id="@+id/toggleButton3"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
+            android:checked="false"
+            android:elegantTextHeight="true"
+            android:text="@string/tb3"
+            android:textOff="@string/tb3"
+            android:textOn="@string/tb3"/>
+
+        <ToggleButton
+            android:id="@+id/toggleButton4"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
+            android:checked="false"
+            android:elegantTextHeight="true"
+            android:text="@string/tb4"
+            android:textOff="@string/tb4"
+            android:textOn="@string/tb4"/>
+
+        <ToggleButton
+            android:id="@+id/toggleButton5"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
+            android:checked="false"
+            android:elegantTextHeight="true"
+            android:text="@string/tb5"
+            android:textOff="@string/tb5"
+            android:textOn="@string/tb5"/>
+
+
+        <TextView
+            android:id="@+id/selectedPlaces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textview"
+            android:textAlignment="center"
+            android:visibility="visible"
+            tools:text='"Places Selected:'/>
+
+
+</GridLayout>

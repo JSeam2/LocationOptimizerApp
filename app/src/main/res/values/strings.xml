@@ -3,7 +3,13 @@
     <string name="select">Select</string>
     <string name="see">See</string>
     <string name="plan">Plan</string>
+    <string name="tb1">Singapore Flyer</string>
+    <string name="tb2">Vivo City</string>
+    <string name="tb3">Resort World Sentosa</string>
+    <string name="tb4">Buddha Tooth Relic Temple</string>
+    <string name="tb5">Zoo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textview">TextView</string>
 </resources>
