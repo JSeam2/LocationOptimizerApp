@@ -1,6 +1,7 @@
 package com.locationoptimizer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,8 @@ public class MapFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Context context;
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,12 +63,35 @@ public class MapFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_map, container, false);
+//    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+
+        //Pass your layout xml to the inflater and assign it to rootView.
+        View rootViewA = inflater.inflate(R.layout.fragment_map, container, false);
+        context = rootViewA.getContext(); // Assign your rootView to context
+        Intent intent = new Intent(context, MapsActivity.class);
+        startActivity(intent);
+
+//        Button mapMarkerButtonA = (Button) rootViewA.findViewById(R.id.mapMarkerButtonO);
+//        mapMarkerButtonA.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Pass the context and the Activity class you need to open from the Fragment Class, to the Intent
+//                Intent intent = new Intent(context, MapsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+        return rootViewA;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

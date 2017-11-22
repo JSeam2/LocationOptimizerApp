@@ -27,9 +27,8 @@
             android:elegantTextHeight="true"
             android:text="@string/tb2"
             android:textOff="@string/tb2"
-            android:textOn="@string/tb2"
 
-            />
+            android:textOn="@string/tb2"/>
 
         <ToggleButton
             android:id="@+id/toggleButton3"
