@@ -14,7 +14,6 @@
     <string name="chkBoxLargeFontKey">Brute-Force</string>
     <string name="title_activity_maps">Map</string>
     <string name="mapTrigger">Show Map Markers</string>
-    <string name="placesSelected">Places Selected</string>
 
 
 </resources>
