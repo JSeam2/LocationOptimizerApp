@@ -1,5 +1,6 @@
 package com.locationoptimizer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,35 @@ public class SelectFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    OnHeadlineSelectedListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface OnHeadlineSelectedListener {
+        public void onArticleSelected(ArrayList<String> placesSelected);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnHeadlineSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+//
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        // Send the event to the host activity
+//        mCallback.onArticleSelected(position);
+//    }
+
+
 
     public SelectFragment() {
         // Required empty public constructor
@@ -84,6 +114,8 @@ public class SelectFragment extends Fragment {
         ToggleButton bt3 = (ToggleButton) rootview.findViewById(R.id.toggleButton3);
         ToggleButton bt4 = (ToggleButton) rootview.findViewById(R.id.toggleButton4);
         ToggleButton bt5 = (ToggleButton) rootview.findViewById(R.id.toggleButton5);
+
+//        Button saveButton = (Button) rootview.findViewById(R.id.saveButton);
 
         // attach an OnClickListener
         bt1.setOnClickListener(new OnClickListener()
@@ -136,7 +168,12 @@ public class SelectFragment extends Fragment {
             }
         });
 
-
+//        saveButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                saveIt(view);
+//            }
+//        });
 
 
         return rootview;
@@ -207,7 +244,11 @@ public class SelectFragment extends Fragment {
             listAll = listAll + "\n" + i;
         }
         selectedPlacesA.setText(listAll);
+
+        mCallback.onArticleSelected(placesSelected);
     }
+
+
 
     @Override
     public void onAttach(Context context) {
@@ -225,6 +266,8 @@ public class SelectFragment extends Fragment {
         mListener = null;
     }
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -239,6 +282,10 @@ public class SelectFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+//
+//    public interface OnFragmentInteractionListener {
+//        public void onFragmentSetStudents(ArrayList<String>);
+//    }
 
 
 }
