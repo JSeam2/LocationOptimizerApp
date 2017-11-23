@@ -68,7 +68,7 @@
             android:id="@+id/selectedPlaces"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textview"
+            android:text="@string/placesSelected"
             android:textAlignment="center"
             android:visibility="visible"
             tools:text='"Places Selected:'/>
