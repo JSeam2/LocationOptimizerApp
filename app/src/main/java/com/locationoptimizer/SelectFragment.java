@@ -35,6 +35,7 @@ public class SelectFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<String> placesSelected = new ArrayList<>();
+    private ArrayList<ToggleButton> tbs = new ArrayList<>();
     private String listAll;
     TextView selectedPlacesA;
 
@@ -111,12 +112,20 @@ public class SelectFragment extends Fragment {
         ToggleButton bt4 = (ToggleButton) rootview.findViewById(R.id.toggleButton4);
         ToggleButton bt5 = (ToggleButton) rootview.findViewById(R.id.toggleButton5);
 
-
+        if (tbs.isEmpty()){
+            tbs.add(bt1);
+            tbs.add(bt2);
+            tbs.add(bt3);
+            tbs.add(bt4);
+            tbs.add(bt5);
+        }
         //TODO: depending on the saved contents of file: (if there are saved contents)
         // set the selectedPlacesA textview to the contents of file (nicely formatted)
         // set the togglebuttons to checked or not...
 
         loadNewMarkersW();
+        checkButtonInList(rootview);
+
 
 
 
@@ -179,6 +188,22 @@ public class SelectFragment extends Fragment {
         return rootview;
     }
 
+
+    private void checkButtonInList(View view) {
+        for (ToggleButton a: tbs){
+            a.setChecked(false);
+        }
+
+        for (String i : placesSelected){
+            for (ToggleButton a: tbs){
+                if (a.getText().equals(i)){
+                    a.setChecked(true);
+                    Toast.makeText(getContext(), a.getText() + "is checked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -192,11 +217,11 @@ public class SelectFragment extends Fragment {
         boolean checked = ((ToggleButton)view).isChecked();
         if(checked) {
             placesSelected.add(this.getString(R.string.tb1));
-            Toast.makeText(getContext(), "Toggled On", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Toggled On", Toast.LENGTH_SHORT).show();
 
         }else{
             placesSelected.remove(this.getString(R.string.tb1));
-            Toast.makeText(getContext(), "Toggled Off", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Toggled Off", Toast.LENGTH_SHORT).show();
 
         }
         updateListAll();

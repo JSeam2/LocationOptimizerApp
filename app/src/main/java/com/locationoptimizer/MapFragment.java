@@ -77,7 +77,12 @@ public class MapFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_map, container, false);
         TextView selectedPlacesA = (TextView) rootview.findViewById(R.id.myTempText);
         selectedPlacesA.setVisibility(View.VISIBLE);
-        selectedPlacesA.setText(placesSelected.toString());
+        try{
+            selectedPlacesA.setText(placesSelected.toString());
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
         return rootview;
     }
 

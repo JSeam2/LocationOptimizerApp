@@ -67,9 +67,10 @@
         <TextView
             android:id="@+id/selectedPlaces"
             android:layout_width="180dp"
-            android:layout_height="90dp"
+            android:layout_height="130dp"
             android:elegantTextHeight="true"
             android:text="@string/tvs"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
             android:visibility="visible"
             tools:text='"Places Selected:'/>
