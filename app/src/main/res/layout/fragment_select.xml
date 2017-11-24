@@ -64,13 +64,13 @@
             android:textOff="@string/tb5"
             android:textOn="@string/tb5"/>
 
-
         <TextView
             android:id="@+id/selectedPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textview"
-            android:textAlignment="center"
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:elegantTextHeight="true"
+            android:text="@string/tvs"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
             android:visibility="visible"
             tools:text='"Places Selected:'/>
 

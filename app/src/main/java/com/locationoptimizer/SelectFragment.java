@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
@@ -71,9 +72,29 @@ public class SelectFragment extends Fragment {
             if (getArguments() != null) {
                 mParam1 = getArguments().getString(ARG_PARAM1);
                 mParam2 = getArguments().getString(ARG_PARAM2);
-
             }
 
+    }
+
+    private void loadNewMarkersW() {
+        try {
+            FileInputStream fin = getContext().openFileInput("places");
+            int c;
+            String temp="";
+            while( (c = fin.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            Gson gson = new Gson();
+            placesSelected= gson.fromJson(temp, ArrayList.class);
+
+            Toast.makeText(getContext(),"file read",Toast.LENGTH_SHORT).show();
+
+            selectedPlacesA.setText(placesSelected.toString());
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -94,6 +115,8 @@ public class SelectFragment extends Fragment {
         //TODO: depending on the saved contents of file: (if there are saved contents)
         // set the selectedPlacesA textview to the contents of file (nicely formatted)
         // set the togglebuttons to checked or not...
+
+        loadNewMarkersW();
 
 
 
