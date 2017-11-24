@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +28,7 @@ public class MapFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private ArrayList<String> placesSelected = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -65,7 +70,25 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        loadNewMarkers();
         return inflater.inflate(R.layout.fragment_map, container, false);
+    }
+
+    private void loadNewMarkers() {
+        try {
+            FileInputStream fin = getContext().openFileInput("places");
+            int c;
+            String temp="";
+            while( (c = fin.read()) != -1){
+                temp = temp + Character.toString((char)c);
+            }
+            Gson gson = new Gson();
+            placesSelected= gson.fromJson(temp, ArrayList.class);
+
+            Toast.makeText(getContext(),"file read",Toast.LENGTH_SHORT).show();
+        }
+        catch(Exception e){
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

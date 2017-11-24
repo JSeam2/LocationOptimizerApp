@@ -12,7 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.gson.Gson;
+
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -207,6 +212,24 @@ public class SelectFragment extends Fragment {
             listAll = listAll + "\n" + i;
         }
         selectedPlacesA.setText(listAll);
+        saveToResource();
+    }
+
+    private void saveToResource() {
+//        String data = placesSelected.toString();
+
+        String data = new Gson().toJson(placesSelected);
+        try {
+//            FileOutputStream fOut = openFileOutput(R.raw.placestmap, MODE_PRIVATE);
+            FileOutputStream fOut = getContext().openFileOutput("places", MODE_PRIVATE);
+            fOut.write(data.getBytes());
+            fOut.close();
+            Toast.makeText(getContext(),"file saved",Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
