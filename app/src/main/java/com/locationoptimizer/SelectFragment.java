@@ -90,6 +90,15 @@ public class SelectFragment extends Fragment {
         ToggleButton bt4 = (ToggleButton) rootview.findViewById(R.id.toggleButton4);
         ToggleButton bt5 = (ToggleButton) rootview.findViewById(R.id.toggleButton5);
 
+
+        //TODO: depending on the saved contents of file: (if there are saved contents)
+        // set the selectedPlacesA textview to the contents of file (nicely formatted)
+        // set the togglebuttons to checked or not...
+
+
+
+
+
         // attach an OnClickListener
         bt1.setOnClickListener(new OnClickListener()
         {

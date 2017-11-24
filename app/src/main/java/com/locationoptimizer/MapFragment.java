@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -70,8 +71,14 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         loadNewMarkers();
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_map, container, false);
+        TextView selectedPlacesA = (TextView) rootview.findViewById(R.id.myTempText);
+        selectedPlacesA.setVisibility(View.VISIBLE);
+        selectedPlacesA.setText(placesSelected.toString());
+        return rootview;
     }
 
     private void loadNewMarkers() {
@@ -88,6 +95,7 @@ public class MapFragment extends Fragment {
             Toast.makeText(getContext(),"file read",Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
+            e.printStackTrace();
         }
     }
 
