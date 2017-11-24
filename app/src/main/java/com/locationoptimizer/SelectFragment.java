@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import java.util.ArrayList;
 
 
 /**
@@ -23,6 +28,9 @@ public class SelectFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ArrayList<String> placesSelected = new ArrayList<>();
+    private String listAll;
+    TextView selectedPlacesA;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -55,17 +63,83 @@ public class SelectFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+            if (getArguments() != null) {
+                mParam1 = getArguments().getString(ARG_PARAM1);
+                mParam2 = getArguments().getString(ARG_PARAM2);
+
+            }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_select, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_select, container, false);
+        selectedPlacesA = (TextView) rootview.findViewById(R.id.selectedPlaces);
+        selectedPlacesA.setVisibility(View.VISIBLE);
+        // get your ToggleButton
+        ToggleButton bt1 = (ToggleButton) rootview.findViewById(R.id.toggleButton1);
+        ToggleButton bt2 = (ToggleButton) rootview.findViewById(R.id.toggleButton2);
+        ToggleButton bt3 = (ToggleButton) rootview.findViewById(R.id.toggleButton3);
+        ToggleButton bt4 = (ToggleButton) rootview.findViewById(R.id.toggleButton4);
+        ToggleButton bt5 = (ToggleButton) rootview.findViewById(R.id.toggleButton5);
+
+        // attach an OnClickListener
+        bt1.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // your click actions go here
+                Toggled1(v);
+            }
+        });
+
+        bt2.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // your click actions go here
+                Toggled2(v);
+            }
+        });
+
+        bt3.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // your click actions go here
+                Toggled3(v);
+            }
+        });
+
+        bt4.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // your click actions go here
+                Toggled4(v);
+            }
+        });
+
+        bt5.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // your click actions go here
+                Toggled5(v);
+            }
+        });
+
+
+
+
+        return rootview;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -73,6 +147,66 @@ public class SelectFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+
+
+    public void Toggled1(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked) {
+            placesSelected.add(this.getString(R.string.tb1));
+            Toast.makeText(getContext(), "Toggled On", Toast.LENGTH_SHORT).show();
+
+        }else{
+            placesSelected.remove(this.getString(R.string.tb1));
+            Toast.makeText(getContext(), "Toggled Off", Toast.LENGTH_SHORT).show();
+
+        }
+        updateListAll();
+    }
+    public void Toggled2(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked) {
+            placesSelected.add(this.getString(R.string.tb2));
+        }else{
+            placesSelected.remove(this.getString(R.string.tb2));
+        }
+        updateListAll();
+    }
+    public void Toggled3(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked) {
+            placesSelected.add(this.getString(R.string.tb3));
+        }else{
+            placesSelected.remove(this.getString(R.string.tb3));
+        }
+        updateListAll();
+    }
+    public void Toggled4(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked) {
+            placesSelected.add(this.getString(R.string.tb4));
+        }else{
+            placesSelected.remove(this.getString(R.string.tb4));
+        }
+        updateListAll();
+    }
+    public void Toggled5(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+        if(checked) {
+            placesSelected.add(this.getString(R.string.tb5));
+        }else{
+            placesSelected.remove(this.getString(R.string.tb5));
+        }
+        updateListAll();
+    }
+
+    private void updateListAll() {
+        listAll = "";
+        for(String i : placesSelected){
+            listAll = listAll + "\n" + i;
+        }
+        selectedPlacesA.setText(listAll);
     }
 
     @Override
@@ -105,4 +239,6 @@ public class SelectFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
