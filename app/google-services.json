@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "300179146387",
+    "firebase_url": "https://locationoptimizer.firebaseio.com",
+    "project_id": "locationoptimizer",
+    "storage_bucket": "locationoptimizer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300179146387:android:c33dcfb08a978a7e",
+        "android_client_info": {
+          "package_name": "com.locationoptimizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300179146387-7u3jibs6cklfaa0sl707q94eu8vj7g1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.locationoptimizer",
+            "certificate_hash": "d074a77c973eef86f96501f2386525827691a9a5"
+          }
+        },
+        {
+          "client_id": "300179146387-hfh5a253g4qcege148pjpc328ua6fm8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnIqLs-r-eT0H9xVFYnKlqzQAaeLTL4Ms"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300179146387-hfh5a253g4qcege148pjpc328ua6fm8f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

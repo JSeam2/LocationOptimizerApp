@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,13 +25,16 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class SelectFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<String> placesSelected = new ArrayList<>();
     private String listAll;
     TextView selectedPlacesA;
+    RecyclerView recyclerView;
+
+    // We won't exceed more than 5 toggles
+    int limit = 5;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,9 +80,20 @@ public class SelectFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_select, container, false);
+        recyclerView = (RecyclerView) rootview.findViewById(R.id.recycle_1);
+
+        // user recyclerView get data from firebase upload to the listivew
+
         selectedPlacesA = (TextView) rootview.findViewById(R.id.selectedPlaces);
         selectedPlacesA.setVisibility(View.VISIBLE);
+
+        // get list of location from firebase
+
+        // loop through the list of location and create toggle buttons
+
         // get your ToggleButton
+
+
         ToggleButton bt1 = (ToggleButton) rootview.findViewById(R.id.toggleButton1);
         ToggleButton bt2 = (ToggleButton) rootview.findViewById(R.id.toggleButton2);
         ToggleButton bt3 = (ToggleButton) rootview.findViewById(R.id.toggleButton3);

@@ -1,10 +1,9 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
+             android:layout_width="wrap_content"
              android:layout_height="match_parent"
              tools:context="com.locationoptimizer.SelectFragment"
-            android:useDefaultMargins="true"
-            android:columnCount="2">
+            android:useDefaultMargins="true">
 
 
         <ToggleButton
@@ -28,7 +27,6 @@
             android:text="@string/tb2"
             android:textOff="@string/tb2"
             android:textOn="@string/tb2"
-
             />
 
         <ToggleButton
@@ -73,6 +71,14 @@
             android:textAlignment="center"
             android:visibility="visible"
             tools:text='"Places Selected:'/>
+        
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
-</GridLayout>
+        </android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>
