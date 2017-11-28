@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#a73018</color>
     <color name="colorAccent">#3640d1</color>
 
-    <color name="unselect">#d3dcda</color>
-    <color name="select">#737373</color>
+    <color name="unselect">#57baec</color>
+    <color name="select">#ec407a</color>
 </resources>

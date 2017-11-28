@@ -1,15 +1,20 @@
 <resources>
+    <!-- meta -->
     <string name="app_name">Tour Singapore</string>
-    <string name="select">Select</string>
-    <string name="see">See</string>
-    <string name="plan">Plan</string>
-    <string name="tb1">Singapore Flyer</string>
-    <string name="tb2">Vivo City</string>
-    <string name="tb3">Resort World Sentosa</string>
-    <string name="tb4">Buddha Tooth Relic Temple</string>
-    <string name="tb5">Zoo</string>
+    <string name="select">1. Select</string>
+    <string name="see">2. See</string>
+    <string name="plan">3. Plan</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textview">TextView</string>
+
+    <!-- Settings Menu Item -->
+    <string name="use_fast_search">Fast Search</string>
+    <string name="use_brute_search">Brute Search</string>
+    <string name="set_budget">Set Budget</string>
+
+    <!-- RecyclerView Stuff -->
+    <string name="recycle_select_off">Select</string>
+    <string name="recycle_select_on">Selected</string>
+    <string name="recycle_text">Null</string>
 </resources>

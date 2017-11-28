@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fast_search_menu"
+        android:title="@string/use_fast_search"
+        android:checkable="true"
+        android:checked="true"
+        app:actionLayout="@layout/switch_item" />
+
+    <item
+        android:id="@+id/brute_search_menu"
+        android:title="@string/use_brute_search"
+        android:checkable="true"
+        android:checked="false"
+        app:actionLayout="@layout/switch_item" />
+
+    <item
+        android:id="@+id/set_budget_menu"
+        android:title="@string/set_budget"/>
+
+</menu>

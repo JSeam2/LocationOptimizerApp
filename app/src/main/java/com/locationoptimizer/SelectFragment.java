@@ -4,41 +4,27 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SelectFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SelectFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SelectFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ArrayList<String> placesSelected = new ArrayList<>();
-    private String listAll;
-    TextView selectedPlacesA;
     RecyclerView recyclerView;
 
-    // We won't exceed more than 5 toggles
-    int limit = 5;
+    // Locations ArrayList
+    ArrayList<String> locations = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // TODO Selected Locations
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,31 +32,11 @@ public class SelectFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SelectFragment newInstance(String param1, String param2) {
-        SelectFragment fragment = new SelectFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             if (getArguments() != null) {
-                mParam1 = getArguments().getString(ARG_PARAM1);
-                mParam2 = getArguments().getString(ARG_PARAM2);
-
+                locations = getArguments().getStringArrayList("locations");
             }
 
     }
@@ -78,86 +44,17 @@ public class SelectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        Toast.makeText(getContext(), "SelectFrag", Toast.LENGTH_SHORT).show();
+
         View rootview = inflater.inflate(R.layout.fragment_select, container, false);
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycle_1);
-
-        // user recyclerView get data from firebase upload to the listivew
-
-        selectedPlacesA = (TextView) rootview.findViewById(R.id.selectedPlaces);
-        selectedPlacesA.setVisibility(View.VISIBLE);
-
-        // get list of location from firebase
-
-        // loop through the list of location and create toggle buttons
-
-        // get your ToggleButton
-
-
-        ToggleButton bt1 = (ToggleButton) rootview.findViewById(R.id.toggleButton1);
-        ToggleButton bt2 = (ToggleButton) rootview.findViewById(R.id.toggleButton2);
-        ToggleButton bt3 = (ToggleButton) rootview.findViewById(R.id.toggleButton3);
-        ToggleButton bt4 = (ToggleButton) rootview.findViewById(R.id.toggleButton4);
-        ToggleButton bt5 = (ToggleButton) rootview.findViewById(R.id.toggleButton5);
-
-        // attach an OnClickListener
-        bt1.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // your click actions go here
-                Toggled1(v);
-            }
-        });
-
-        bt2.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // your click actions go here
-                Toggled2(v);
-            }
-        });
-
-        bt3.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // your click actions go here
-                Toggled3(v);
-            }
-        });
-
-        bt4.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // your click actions go here
-                Toggled4(v);
-            }
-        });
-
-        bt5.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // your click actions go here
-                Toggled5(v);
-            }
-        });
-
-
-
-
+        LocationAdapter adapter = new LocationAdapter(getContext(), locations);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return rootview;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -165,72 +62,11 @@ public class SelectFragment extends Fragment {
     }
 
 
-
-    public void Toggled1(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-        if(checked) {
-            placesSelected.add(this.getString(R.string.tb1));
-            Toast.makeText(getContext(), "Toggled On", Toast.LENGTH_SHORT).show();
-
-        }else{
-            placesSelected.remove(this.getString(R.string.tb1));
-            Toast.makeText(getContext(), "Toggled Off", Toast.LENGTH_SHORT).show();
-
-        }
-        updateListAll();
-    }
-    public void Toggled2(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-        if(checked) {
-            placesSelected.add(this.getString(R.string.tb2));
-        }else{
-            placesSelected.remove(this.getString(R.string.tb2));
-        }
-        updateListAll();
-    }
-    public void Toggled3(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-        if(checked) {
-            placesSelected.add(this.getString(R.string.tb3));
-        }else{
-            placesSelected.remove(this.getString(R.string.tb3));
-        }
-        updateListAll();
-    }
-    public void Toggled4(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-        if(checked) {
-            placesSelected.add(this.getString(R.string.tb4));
-        }else{
-            placesSelected.remove(this.getString(R.string.tb4));
-        }
-        updateListAll();
-    }
-    public void Toggled5(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-        if(checked) {
-            placesSelected.add(this.getString(R.string.tb5));
-        }else{
-            placesSelected.remove(this.getString(R.string.tb5));
-        }
-        updateListAll();
-    }
-
-    private void updateListAll() {
-        listAll = "";
-        for(String i : placesSelected){
-            listAll = listAll + "\n" + i;
-        }
-        selectedPlacesA.setText(listAll);
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-            Toast.makeText(context, "Select fragment attached", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -240,16 +76,6 @@ public class SelectFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
