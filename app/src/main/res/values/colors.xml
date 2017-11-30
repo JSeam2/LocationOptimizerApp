@@ -6,4 +6,5 @@
 
     <color name="unselect">#57baec</color>
     <color name="select">#ec407a</color>
+    <color name="firstselect">#ffab40</color>
 </resources>

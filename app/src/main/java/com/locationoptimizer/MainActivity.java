@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.content, select).commit();
                     return true;
                 case R.id.navigation_mapMarker:
-                    transaction.replace(R.id.content, new MapFragment()).commit();
+                        transaction.replace(R.id.content, new MapFragment()).commit();
                     return true;
                 case R.id.navigation_itinerary:
                     transaction.replace(R.id.content, new PlansFragment()).commit();
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.child("location").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Iterable<DataSnapshot> values = dataSnapshot.getChildren();
@@ -115,6 +116,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                if(!locations.isEmpty()) {
+                    // TODO locations array is empty at this point why is locations 0?
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    SelectFragment select = new SelectFragment();
+                    Bundle selectBundle = new Bundle();
+                    selectBundle.putStringArrayList("locations", locations);
+                    Log.d("DEBUG", Integer.toString(locations.size()));
+                    select.setArguments(selectBundle);
+                    transaction.replace(R.id.content, select).commit();
+                }
+
             }
 
             @Override
@@ -124,15 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // TODO locations array is empty at this point why is locations 0?
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        SelectFragment select = new SelectFragment();
-        Bundle selectBundle = new Bundle();
-        selectBundle.putStringArrayList("locations", locations);
-        Log.d("DEBUG", Integer.toString(locations.size()));
-        select.setArguments(selectBundle);
-        transaction.replace(R.id.content, select).commit();
+
     }
 
 

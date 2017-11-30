@@ -9,18 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class SelectFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // Recycler stuff
     RecyclerView recyclerView;
+    LocationAdapter adapter;
 
     // Locations ArrayList
-    ArrayList<String> locations = new ArrayList<>();
+    public static ArrayList<String> locations = new ArrayList<>();
 
     // TODO Selected Locations
 
@@ -35,6 +33,7 @@ public class SelectFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
             if (getArguments() != null) {
                 locations = getArguments().getStringArrayList("locations");
             }
@@ -45,11 +44,14 @@ public class SelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Toast.makeText(getContext(), "SelectFrag", Toast.LENGTH_SHORT).show();
+        if (savedInstanceState != null){
+            adapter = (LocationAdapter) savedInstanceState.getSerializable("adapter");
+        } else {
+            adapter = new LocationAdapter(getContext(), locations);
+        }
 
         View rootview = inflater.inflate(R.layout.fragment_select, container, false);
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycle_1);
-        LocationAdapter adapter = new LocationAdapter(getContext(), locations);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return rootview;
@@ -79,6 +81,12 @@ public class SelectFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("adapter", adapter);
     }
 
 

@@ -9,14 +9,18 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> implements Serializable {
 
     private ArrayList<String> locations;
     private Context myContext;
+    public static ArrayList<String> selectedLocations = new ArrayList<>();
 
     public LocationAdapter(Context _context, ArrayList<String> _locations){
+        // We omit MBS as it is the start and end location
+        _locations.remove("Marina Bay Sands");
         locations = _locations;
         myContext = _context;
     }
@@ -41,23 +45,43 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     @Override
     public void onBindViewHolder(LocationAdapter.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        String location = locations.get(position);
+        final String location = locations.get(position);
+        ToggleButton toggleButton = null;
 
         // Set item views based on your views and data model
-        TextView textView = viewHolder.nameTextView;
-        textView.setText(location);
-        ToggleButton toggleButton = viewHolder.selectToggleButton;
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            // To add or remove values to the array to feed into selectedLocations array
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(compoundButton.isChecked()){
-                    compoundButton.setBackgroundColor(myContext.getResources().getColor(R.color.select));
-                } else {
-                    compoundButton.setBackgroundColor(myContext.getResources().getColor(R.color.unselect));
+        if(!location.equals("Marina Bay Sands")){
+            final TextView textView = viewHolder.nameTextView;
+            textView.setText(location);
+            toggleButton = viewHolder.selectToggleButton;
+
+            // Retrieve Previous Values
+            if(!selectedLocations.isEmpty()){
+                for(String l : selectedLocations){
+                    if(l.equals(location)){
+                        toggleButton.setChecked(true);
+                        toggleButton.setBackgroundColor(myContext.getResources().getColor(R.color.select));
+                    }
                 }
             }
-        });
+
+            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                // To add or remove values to the array to feed into selectedLocations array
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(compoundButton.isChecked()){
+                        compoundButton.setText(myContext.getResources().getText(R.string.recycle_select_on));
+                        compoundButton.setBackgroundColor(myContext.getResources().getColor(R.color.select));
+                        selectedLocations.add(location);
+
+
+                    } else {
+                        compoundButton.setBackgroundColor(myContext.getResources().getColor(R.color.unselect));
+                        compoundButton.setText(myContext.getResources().getText(R.string.recycle_select_off));
+                        selectedLocations.remove(location);
+                    }
+                }
+            });
+        }
     }
 
 
@@ -66,6 +90,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         return locations.size();
     }
 
+    public static ArrayList<String> getSelectedLocations(){
+        return selectedLocations;
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -18,6 +18,7 @@
         android:layout_height="60dp"
         android:textOff="@string/recycle_select_off"
         android:textOn="@string/recycle_select_on"
+        android:checked="false"
         android:background="@color/unselect"/>
 
 </LinearLayout>
