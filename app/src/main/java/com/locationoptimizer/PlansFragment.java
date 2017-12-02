@@ -26,11 +26,13 @@ public class PlansFragment extends Fragment {
     private TextView outputView;
 
 
+
     HashMap<String, Node> dataMap;
 
     HashMap<String, Node> data;
     ArrayList<String> selected;
     ArrayList<String> locations;
+    ArrayList<InfoPath> allPossiblePaths;
     double budget;
 
     // Database
@@ -107,6 +109,8 @@ public class PlansFragment extends Fragment {
 //                        }
                     }
 
+                    BruteForceAlgo();
+
 
                 } else if (controller.fetch().getInt(1) == 1 && controller.fetch().getInt(2) == 0){
                     // Fast Search
@@ -144,6 +148,36 @@ public class PlansFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public void BruteForceAlgo(){
+        /** generate all possible paths.
+         * set it as global pathsPossible */
+        allPossiblePaths = new ArrayList<>();
+        locations = LocationAdapter.getSelectedLocations();
+        Log.i("Location content?", locations.get(0).toString() + " 1");
+        int count = 0;
+        for(String a : locations){
+            count += 1;
+            Log.i("location order: ", a + " " + count);
+        }
+        // TODO: get all permutations of locations
+
+
+
+
+
+        
+        //TODO: add to permutation to arraylist & add the time too (if less than budget)
+
+
+
+        //TODO: add MBS to arraylist (front and back) and add time for each mode.
+
+
+
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

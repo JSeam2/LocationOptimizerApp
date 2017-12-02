@@ -65,7 +65,6 @@ public class MapFragment extends Fragment {
                 e.printStackTrace();
             }
 
-
         }
 
         View rootview = inflater.inflate(R.layout.fragment_map, container, false);
