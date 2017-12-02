@@ -11,9 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.common.collect.Collections2;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -154,19 +158,29 @@ public class PlansFragment extends Fragment {
          * set it as global pathsPossible */
         allPossiblePaths = new ArrayList<>();
         locations = LocationAdapter.getSelectedLocations();
-        Log.i("Location content?", locations.get(0).toString() + " 1");
+        Log.i("Location number", String.valueOf(locations.size()) );
         int count = 0;
         for(String a : locations){
             count += 1;
             Log.i("location order: ", a + " " + count);
         }
-        // TODO: get all permutations of locations
+        // TODO: get all permutations of locations and travel
+        Collection<List<String>> orderperm = permutations(locations);
+
+        for (List<String> val : orderperm) {
+            Log.i("permu", val.toString());
+
+            //TODO: get tine of 2+mbs & travel types
+
+
+
+
+        }
 
 
 
 
 
-        
         //TODO: add to permutation to arraylist & add the time too (if less than budget)
 
 
@@ -175,6 +189,14 @@ public class PlansFragment extends Fragment {
 
 
 
+    }
+
+    public Collection<List<String>> permutations (ArrayList<String> a) {
+        List<String> vals = a;
+
+        Collection<List<String>> orderPerm = Collections2.permutations(vals);
+
+        return orderPerm;
     }
 
 
