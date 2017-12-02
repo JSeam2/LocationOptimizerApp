@@ -9,12 +9,11 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> implements Serializable {
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
 
-    private ArrayList<String> locations;
+    private static ArrayList<String> locations;
     private Context myContext;
     public static ArrayList<String> selectedLocations = new ArrayList<>();
 
@@ -94,6 +93,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         return selectedLocations;
     }
 
+    public static ArrayList<String> getLocations(){
+        return locations;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView nameTextView;
@@ -108,3 +111,5 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     }
 
 }
+
+

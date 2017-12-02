@@ -9,11 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class PlansFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    private boolean settings;
     private Button searchBtn;
+    private TextView budgetView;
+    private TextView outputView;
+
+
+    HashMap<String, Node> dataMap;
+
+    HashMap<String, Node> data;
+    ArrayList<String> selected;
+    ArrayList<String> locations;
+    double budget;
 
     // Database
     private SettingSQLController controller = new SettingSQLController(getContext());
@@ -29,19 +47,73 @@ public class PlansFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_plans, container, false);
+
         searchBtn = (Button) rootview.findViewById(R.id.plan_search_button);
+        outputView = (TextView) rootview.findViewById(R.id.plan_output);
+        budgetView = (TextView) rootview.findViewById(R.id.plan_budget);
+
+        // Location Data
+        dataMap = MainActivity.getLocationDataList();
+
+        // ToDo Parsing Data From MainActivity
+        for(Map.Entry<String, Node> entry : dataMap.entrySet()){
+            Log.i("From", entry.getKey());
+            Node n = entry.getValue();
+            HashMap<String, ArrayList<Double>> nData = n.getAllData();
+            for(String s : nData.keySet()){
+                Log.i("To", s);
+            }
+        }
+
+        // Selected Locations
+        selected = LocationAdapter.getSelectedLocations();
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // fetch settings
                 Log.i("sql", Integer.toString(controller.fetch().getInt(1)));
                 Log.i("sql", Integer.toString(controller.fetch().getInt(2)));
                 Log.i("sql", Double.toString(controller.fetch().getDouble(3)));
+
+                // fetch budget
+                budget = controller.fetch().getDouble(3);
+
+                // fetch settings
+                Set<String> selectedSet = new HashSet<>();
+                selectedSet.addAll(selected);
+                selectedSet.add("Marina Bay Sands"); // This is our start and end point
+
+                // Check out count
+                int count = selectedSet.size();
+
+                if(controller.fetch().getInt(1) == 0 && controller.fetch().getInt(2) == 1){
+                    // Brute Search
+                    budgetView.setText("Budget : $"+Double.toString(budget) + "\t" + "Search: Brute");
+                    // Selected locations
+                    Node node = dataMap.get("Marina Bay Sands");
+
+                    for(String entry : selectedSet){
+                        ArrayList<Double> entryData = node.getToData(entry);
+
+                        // Loop through the from locations.
+                        int countLocation = 0;
+//                        for(int i = 0; i < entryData.size(); i = i + 2){
+//                            double cost = entryData.get(i);
+//                            double time = entryData.get(i + 1);
+//                        }
+                    }
+
+
+                } else if (controller.fetch().getInt(1) == 1 && controller.fetch().getInt(2) == 0){
+                    // Fast Search
+                    budgetView.setText("Budget : $"+Double.toString(budget) + "\t" + "Search: Fast");
+
+                }
+
             }
         });
 
