@@ -106,45 +106,35 @@ public class PlansFragment extends Fragment {
 
                 if(controller.fetch().getInt(1) == 0 && controller.fetch().getInt(2) == 1){
                     // Brute Search
-                    budgetView.setText("Budget : $"+ Double.toString(budget) + "\t" + "Search: Brute");
-                    // Selected locations
-//                    Node node = dataMap.get("Marina Bay Sands");
-
-//                    for(String entry : selectedSet){
-//                        ArrayList<Double> entryData = node.getToData(entry);
-
-                        // Loop through the from locations.
-//                        int countLocation = 0;
-//                        for(int i = 0; i < entryData.size(); i = i + 2){
-//                            double cost = entryData.get(i);
-//                            double time = entryData.get(i + 1);
-//                        }
-//                    }
+                    budgetView.setText("Budget : $"+ Double.toString(budget) + "  " + "Search: Brute");
 
                     BruteForceAlgo();
 
                     ArrayList<String> bestOption = bestOp.getPath();
 
                     String s = "";
+                    String temp = "";
                     for(int i = 0; i < bestOption.size(); i++){
                         if (i%2 ==0){
-                            s += bestOption.get(i);
+                            temp = bestOption.get(i);
                             Log.d("BestOp", bestOption.get(i).toString());
                         }else{
-                            s += " taking " + bestOption.get(i).toLowerCase() + " to ";
-                            Log.d("BestOp", bestOption.get(i).toString());
+                            if(i+1 < bestOption.size()) {
+                                s += temp + " " + bestOption.get(i).toLowerCase() + " to " + bestOption.get(i + 1) + "\n\n";
+                                Log.d("BestOp", bestOption.get(i).toString());
+                            }
                         }
                     }
 
-                    s += "\nThe Cost is " + Double.toString(bestOp.getCost());
-                    s += "\nThe Time is " + Double.toString(bestOp.getTimeTaken());
+                    s += "\n\nThe Cost: " + Double.toString(bestOp.getCost()) + " SGD";
+                    s += "\nTime taken: " + Double.toString(bestOp.getTimeTaken()) + " minutes";
 
                     outputView.setText(s);
 
 
                 } else if (controller.fetch().getInt(1) == 1 && controller.fetch().getInt(2) == 0){
                     // Fast Search
-                    budgetView.setText("Budget : $"+Double.toString(budget) + "\t" + "Search: Fast");
+                    budgetView.setText("Budget : $"+Double.toString(budget) + "  " + "Search: Fast");
 
                 }
 

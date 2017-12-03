@@ -18,9 +18,14 @@
             android:layout_height="wrap_content"
             android:text="@string/fragment_select_info2"
             android:textAlignment="center"
-            android:textColor="#2d2d2d"
+            android:textColor="#2d2d2d" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_select_info3"
+            android:textAlignment="center"
+            android:textColor="#26c6da"
             android:layout_marginBottom="20dp"/>
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle_1"

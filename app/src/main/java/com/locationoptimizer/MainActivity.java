@@ -155,32 +155,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         fastItem = menu.findItem(R.id.fast_search_menu);
         bruteItem = menu.findItem(R.id.brute_search_menu);
 
-        if(controller.fetch().isNull(3)) {
-            fastItem.setChecked(fastCheck);
-            bruteItem.setChecked(bruteCheck);
-        } else {
-            int a = controller.fetch().getInt(0);
-            int b = controller.fetch().getInt(1);
-
-            if(a == 1 && b == 0){
-                fastCheck = true;
-                bruteCheck = false;
-                fastItem.setChecked(fastCheck);
-                bruteItem.setChecked(bruteCheck);
-            } else if (a == 0 && b == 1){
-                fastCheck = false;
-                bruteCheck = true;
-
-                fastItem.setChecked(fastCheck);
-                bruteItem.setChecked(bruteCheck);
-            }
-        }
         return true;
     }
 
