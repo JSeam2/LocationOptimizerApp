@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     // Firebase for location information
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean fastCheck = true;
     private boolean bruteCheck = false;
     private double budget = 20;
+
+    // Data Structure for the Map
+    public static HashMap<String, Node> locationDataList = new HashMap<>();
 
     // To display in 1. Select
     ArrayList<String> locations = new ArrayList<>();
@@ -90,31 +94,41 @@ public class MainActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Iterable<DataSnapshot> values = dataSnapshot.getChildren();
+
+                // From Location
                 for(DataSnapshot d : values){
-                    Log.w("Locations", "\t\t" + d.getKey());
-
-                    // Add the data into selectFragItem to display buttons
-                    locations.add(d.getKey());
-
+                    String fromLocation = d.getKey();
+                    locations.add(fromLocation);        // Needed to display locations
+                    Log.i("Locations", "\t" + fromLocation);
                     Iterable<DataSnapshot> children = d.getChildren();
 
+                    Node tempNode = new Node();
+                    // To Location
                     for(DataSnapshot child : children){
-                        Log.w("Child", "\t\t\t" + child.getKey());
-
+                        String toLocation = child.getKey();
+                        Log.i("Child", "\t\t\t" + toLocation);
                         Iterable<DataSnapshot> gChildren = child.getChildren();
+                        ArrayList<Double> valueArrayList = new ArrayList<>();
 
+                        // Transport Type
                         for(DataSnapshot gChild : gChildren){
-                            Log.w("gChild", "\t\t\t\t" + gChild.getKey());
-
+                            Log.i("gChild", "\t\t\t\t" + gChild.getKey());
                             Iterable<DataSnapshot> ggChildren = gChild.getChildren();
 
+                            // Cost and Time
                             for(DataSnapshot ggChild: ggChildren){
-                                Log.w("ggChild", "\t\t\t\t\t" + ggChild.getKey() +
-                                        ": " + ggChild.getValue().toString());
-
+                                Log.w("ggChild", "\t\t\t\t\t" + ggChild.getKey() + " : " + ggChild.getValue().toString());
+                                if(ggChild.getValue() instanceof Long){
+                                    valueArrayList.add((Double) ((Long) ggChild.getValue()).doubleValue());
+                                } else {
+                                    valueArrayList.add((Double) ggChild.getValue());
+                                }
                             }
+                            tempNode.add(toLocation, valueArrayList);
                         }
                     }
+
+                    locationDataList.put(fromLocation, tempNode);
                 }
 
                 if(!locations.isEmpty()) {
@@ -147,8 +161,26 @@ public class MainActivity extends AppCompatActivity {
         fastItem = menu.findItem(R.id.fast_search_menu);
         bruteItem = menu.findItem(R.id.brute_search_menu);
 
-        fastItem.setChecked(fastCheck);
-        bruteItem.setChecked(bruteCheck);
+        if(controller.fetch().isNull(3)) {
+            fastItem.setChecked(fastCheck);
+            bruteItem.setChecked(bruteCheck);
+        } else {
+            int a = controller.fetch().getInt(0);
+            int b = controller.fetch().getInt(1);
+
+            if(a == 1 && b == 0){
+                fastCheck = true;
+                bruteCheck = false;
+                fastItem.setChecked(fastCheck);
+                bruteItem.setChecked(bruteCheck);
+            } else if (a == 0 && b == 1){
+                fastCheck = false;
+                bruteCheck = true;
+
+                fastItem.setChecked(fastCheck);
+                bruteItem.setChecked(bruteCheck);
+            }
+        }
         return true;
     }
 
@@ -212,6 +244,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public static HashMap<String, Node> getLocationDataList() {
+        return locationDataList;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -220,4 +257,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+}
+
+class Node{
+    //          BusTrain  Taxi    Walking
+    // A : {B:  [0.77,17, 5.3, 7, 0, 112]   ,
+    //      C:  [                       ]   ,
+    //      D:  [                       ]}
+    public HashMap<String, ArrayList<Double>> data;
+
+    public Node(){
+        data = new HashMap<String, ArrayList<Double>>();
+    }
+
+    public void add(String to, ArrayList<Double> values){
+        data.put(to, values);
+    }
+
+    public ArrayList<Double> getToData(String to){
+        return data.get(to);
+    }
+
+    public HashMap<String, ArrayList<Double>> getAllData(){
+        return data;
+    }
 }

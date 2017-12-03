@@ -83,11 +83,5 @@ public class SelectFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("adapter", adapter);
-    }
-
 
 }
