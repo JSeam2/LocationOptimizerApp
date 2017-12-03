@@ -1,5 +1,6 @@
 package com.locationoptimizer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,12 +19,14 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -87,6 +90,7 @@ public class PlansFragment extends Fragment {
         selected = LocationAdapter.getSelectedLocations();
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
                 if(selected.isEmpty()){
@@ -114,9 +118,9 @@ public class PlansFragment extends Fragment {
 
                 if(controller.fetch().getInt(1) == 0 && controller.fetch().getInt(2) == 1){
                     // Brute Search
-                    budgetView.setText("Budget : $"+ Double.toString(budget) + "  " + "Search: Brute");
+                    budgetView.setText("Budget : $"+ String.format("%.2f", budget) + "  " + "Search: Brute");
 
-                    BruteForceAlgo();
+                    bruteForceAlgo();
 
                     ArrayList<String> bestOption = bestOp.getPath();
 
@@ -134,16 +138,18 @@ public class PlansFragment extends Fragment {
                         }
                     }
 
-                    s += "\n\nThe Cost: " + Double.toString(bestOp.getCost()) + " SGD";
-                    s += "\nTime taken: " + Double.toString(bestOp.getTimeTaken()) + " minutes";
+
+                    s += "\n\nCost: " + String.format("%.2f", bestOp.getCost()) + " SGD";
+                    s += "\nTime taken: " + String.format("%.2f", bestOp.getTimeTaken()) + " minutes";
 
                     outputView.setText(s);
 
 
                 } else if (controller.fetch().getInt(1) == 1 && controller.fetch().getInt(2) == 0){
                     // Fast Search
-                    budgetView.setText("Budget : $"+Double.toString(budget) + "  " + "Search: Fast");
-
+                    budgetView.setText("Budget : $" + String.format("%.2f", budget) + "  " + "Search: Fast");
+                    String output = fastAlgo();
+                    outputView.setText(output);
                 }
 
             }
@@ -177,7 +183,7 @@ public class PlansFragment extends Fragment {
         mListener = null;
     }
 
-    public void BruteForceAlgo(){
+    public void bruteForceAlgo(){
         /** generate all possible paths.
          * set it as global pathsPossible */
         allPossiblePaths = new ArrayList<>();
@@ -297,8 +303,8 @@ public class PlansFragment extends Fragment {
                 String modeOfTransport = path.get(i+1);
                 String nextLocation = path.get(i+2);
 
-                totalTime += TimeOfTravel(currentLocation, modeOfTransport, nextLocation);
-                totalCost += CostOfTravel(currentLocation, modeOfTransport, nextLocation);
+                totalTime += timeOfTravel(currentLocation, modeOfTransport, nextLocation);
+                totalCost += costOfTravel(currentLocation, modeOfTransport, nextLocation);
             }
         }
         a.setTimeTaken(totalTime);
@@ -306,21 +312,20 @@ public class PlansFragment extends Fragment {
         
     }
 
-    private double CostOfTravel(String currentLocation, String modeOfTransport, String nextLocation) {
+    private double costOfTravel(String currentLocation, String modeOfTransport, String nextLocation) {
         Node a = dataMap.get(currentLocation);
-//        String c = a.getToData(nextLocation);
+
         HashMap<String, ArrayList<Double>> b = a.getAllData();
-//        String c = b.toString();
-//        Log.d("HashDM", c);
-        List<Double> wtEven = b.get(nextLocation);
+
+        List<Double> nextLocationData = b.get(nextLocation);
         Log.d("HashDM", currentLocation);
         Log.d("HashDM", nextLocation);
-        Log.d("HashDM", wtEven.toString());
+        Log.d("HashDM", nextLocationData.toString());
 
         if (modeOfTransport.equals("Bus_Train")){
-            return wtEven.get(0);
+            return nextLocationData.get(0);
         }else if(modeOfTransport.equals("Taxi")){
-            return wtEven.get(2);
+            return nextLocationData.get(2);
         }
         return 0;
     }
@@ -331,24 +336,23 @@ public class PlansFragment extends Fragment {
     //      D:  [                       ]}
     //BusTraincost 0  BusTraintime 1 Taxicost 2 Taxitime 3 Walkingcost 4 Walkingtime 5
 
-
-    private double TimeOfTravel(String currentLocation, String modeOfTransport, String nextLocation) {
+    private double timeOfTravel(String currentLocation, String modeOfTransport, String nextLocation) {
         Node a = dataMap.get(currentLocation);
 //        String c = a.getToData(nextLocation);
         HashMap<String, ArrayList<Double>> b = a.getAllData();
 //        String c = b.toString();
 //        Log.d("HashDM", c);
-        List<Double> wtEven = b.get(nextLocation);
+        List<Double> nextLocationData = b.get(nextLocation);
         Log.d("HashDM", currentLocation);
         Log.d("HashDM", nextLocation);
-        Log.d("HashDM", wtEven.toString());
+        Log.d("HashDM", nextLocationData.toString());
 
         if (modeOfTransport.equals("Bus_Train")){
-            return wtEven.get(1);
+            return nextLocationData.get(1);
         }else if(modeOfTransport.equals("Taxi")){
-            return wtEven.get(3);
+            return nextLocationData.get(3);
         }else if(modeOfTransport.equals("Walk")){
-            return wtEven.get(5);
+            return nextLocationData.get(5);
         }
         return 0;
     }
@@ -361,6 +365,168 @@ public class PlansFragment extends Fragment {
         return orderPerm;
     }
 
+
+    /**
+     * We use Simulated Annealing
+     * Objective function min(Total_Time)
+     * Constraint cost <= budget
+     * P = exp(-df / T)
+     *
+     * Travel to all N locations subject to objective and constraint
+     *
+     * Configuration Settings:
+     * This is the permutation of the cities from 1 to N,
+     * given in all orders. We want to select the optimal one
+     *
+     * Rearrangement Settings:
+     * We will replace sections of the path and replace with
+     * random ones and retest if this is optimal or not by
+     * calculating the total time.
+     */
+    public String fastAlgo(){
+        String start = "Marina Bay Sands";
+        String end = "Marina Bay Sands";
+        ArrayList<String> inBetween = selected;
+        double contraintBudget = budget;
+
+        String[] transportOption = {"Bus_Train", "Walk", "Taxi"};
+
+        // Records
+        String[] locationRecord = new String[inBetween.size() + 2];
+        locationRecord[0] = start;
+        locationRecord[inBetween.size() + 1] = end;
+
+        String[] locationRecordTemp = new String[inBetween.size() + 2];      // for reverting
+        locationRecord[0] = start;
+        locationRecord[inBetween.size() + 1] = end;
+
+        String[] transportRecord = new String[inBetween.size() + 1];
+        String[] transportRecordTemp = new String[inBetween.size() + 1];    // for reverting
+
+
+        // Simulated Annealing Variables to manually adjust till we get decent performance
+        double t = 10000;   // Temperature
+        double coolingRate = 0.005;
+        double numberOfIterations;
+        if(selected.size() < 4) {
+            numberOfIterations = 800;
+        } else {
+            numberOfIterations = 1200;
+        }
+
+        // Initialize state by setting inBetween in its current order into the locationRecord
+        for(int i = 0; i < locationRecord.length; i++){
+            if(i != 0 && i != locationRecord.length - 1){
+                // Don't modify ends as they are MBS and fixed
+                locationRecord[i] = inBetween.get(i - 1);
+            }
+        }
+
+        // clone into Temp
+        locationRecordTemp = locationRecord.clone();
+
+        // Initialize state by randomly insert transportOptions into transportRecord;
+        for(int i = 0; i < transportRecord.length; i++){
+            // Random generator to generate numbers between 0 and 2 for transportOption
+            Random gen = new Random();
+            int sel = gen.nextInt(3);
+            transportRecord[i] = transportOption[sel];
+        }
+
+        // transportRecordTemp = transportRecord.clone();
+
+        // Get currentTime and currentCost based on initial values
+        double currentTime = getTotalTime(locationRecord, transportRecord);
+        double currentCost = getTotalTime(locationRecord, transportRecord);
+        Log.d("FastAlgo", "Current Time: " + Double.toString(currentTime));
+        Log.d("FastAlgo", "Current Cost: " + Double.toString(currentCost));
+
+
+        // Main simulation loop
+        for(int i = 0; i < numberOfIterations; i++){
+            // Scramble locationsRecordTemp
+            Collections.shuffle(inBetween);
+            for(int j = 0; j < locationRecordTemp.length; j++){
+                if(j != 0 && j != locationRecordTemp.length - 1){
+                    // Don't modify ends as they are MBS and fixed
+                    locationRecordTemp[j] = inBetween.get(j - 1);
+                }
+            }
+
+            // Scramble transportRecordTemp
+            for(int k = 0; k < transportRecordTemp.length; k++){
+                // Random generator to generate numbers between 0 and 2 for transportOption
+                Random gen = new Random();
+                int sel = gen.nextInt(3);
+                transportRecordTemp[k] = transportOption[sel];
+            }
+
+            Log.d("fastloop", Arrays.toString(transportRecordTemp));
+            Log.d("fastloop", Arrays.toString(locationRecordTemp));
+            double tempTime = getTotalTime(locationRecordTemp, transportRecordTemp);
+            double tempCost = getTotalCost(locationRecordTemp, transportRecordTemp);
+
+            if(tempCost > budget){
+                continue;
+            } else {
+                if(tempTime < currentTime){
+                    // Update values
+                    currentTime = tempTime;
+                    currentCost = tempCost;
+                    locationRecord = Arrays.copyOf(locationRecordTemp, locationRecordTemp.length);
+                    transportRecord = Arrays.copyOf(transportRecordTemp, transportRecordTemp.length);
+                } else if (Math.exp(currentTime - tempTime / t) < Math.random()){
+                    continue;
+                }
+            }
+
+            Log.d("FastAlgo", "Current Time: " + Double.toString(currentTime));
+            Log.d("FastAlgo", "Current Cost: " + Double.toString(currentCost));
+
+            // reduce temperature
+            t *= coolingRate;
+        }
+
+        // After the simulation is completed, hopefully we found a decent solution
+        // We may now print out the string
+        String s = "";
+        for(int i = 0; i < locationRecord.length; i++){
+            if ((i + 1) < locationRecord.length){
+                s += locationRecord[i] + " " + transportRecord[i] + " to " + locationRecord[i+1] + "\n\n";
+            }
+        }
+
+        s += "\n\nCost: " + String.format("%.2f", currentCost) + " SGD";
+        s += "\nTime taken: " + String.format("%.2f", currentTime) + " minutes";
+
+        return s;
+    }
+
+    public double getTotalTime(String[] locationRecord, String[] transportRecord){
+        double output = 0;
+        for(int i = 0; i < locationRecord.length; i++){
+            if(i + 1 != locationRecord.length) {
+                output = output + timeOfTravel(locationRecord[i], transportRecord[i], locationRecord[i + 1]);
+                Log.d("getTotalTime", locationRecord[i] + " " + transportRecord[i] + " " + locationRecord[i + 1]);
+                Log.d("getTotalTime", "Time : " + Double.toString(timeOfTravel(locationRecord[i], transportRecord[i], locationRecord[i + 1])));
+
+            }
+        }
+
+        return output;
+    }
+
+    public double getTotalCost(String[] locationRecord, String[] transportRecord){
+        double output = 0;
+        for(int i = 0; i < locationRecord.length; i++){
+            if(i + 1 != locationRecord.length) {
+                output = output + costOfTravel(locationRecord[i], transportRecord[i], locationRecord[i + 1]);
+                Log.d("getTotalCost", "Cost : " + Double.toString(costOfTravel(locationRecord[i], transportRecord[i], locationRecord[i + 1])));
+
+            }
+        }
+        return output;
+    }
 
 
     /**
