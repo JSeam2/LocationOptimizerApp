@@ -89,6 +89,14 @@ public class PlansFragment extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(selected.isEmpty()){
+                    Toast.makeText(getContext(), "No location selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Toast.makeText(getContext(), "Please wait while we make a plan", Toast.LENGTH_SHORT).show();
+
+
                 Log.i("sql", Integer.toString(controller.fetch().getInt(1)));
                 Log.i("sql", Integer.toString(controller.fetch().getInt(2)));
                 Log.i("sql", Double.toString(controller.fetch().getDouble(3)));

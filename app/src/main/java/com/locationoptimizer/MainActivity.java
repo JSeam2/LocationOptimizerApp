@@ -80,11 +80,15 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        Toast.makeText(this, "Ensure Internet is on to see locations", Toast.LENGTH_SHORT).show();
+
+
         // Settings database stuff
         controller = new SettingSQLController(this);
         controller.open();
         Cursor cursor = controller.fetch();
         controller.insert(fastCheck, bruteCheck, budget);
+        controller.update(1, fastCheck, bruteCheck, budget);
 
 
         myRef.child("location").addValueEventListener(new ValueEventListener() {

@@ -50,6 +50,7 @@ public class SelectFragment extends Fragment {
             adapter = new LocationAdapter(getContext(), locations);
         }
 
+
         View rootview = inflater.inflate(R.layout.fragment_select, container, false);
         recyclerView = (RecyclerView) rootview.findViewById(R.id.recycle_1);
         recyclerView.setAdapter(adapter);
