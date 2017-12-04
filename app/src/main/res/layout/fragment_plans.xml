@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.locationoptimizer.PlansFragment">
+    tools:context="com.locationoptimizer.PlansFragment"
+    android:layout_margin="15dp">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -37,12 +38,16 @@
                 android:id="@+id/plan_budget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text=""
+                android:textColor="#2d2d2d"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/plan_output"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="#2d2d2d"/>
         </LinearLayout>
 
     </ScrollView>

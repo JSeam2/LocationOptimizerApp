@@ -417,7 +417,7 @@ public class PlansFragment extends Fragment {
         // Simulated Annealing Variables to manually adjust till we get decent performance
         double t = 10000;   // Temperature
         double coolingRate = 0.005;
-        double numberOfIterations = selected.size() * 300 + 500;
+        int numberOfIterations = getNumIters(selected.size());
 
         // Initialize state by setting inBetween in its current order into the locationRecord
         for(int i = 0; i < locationRecord.length; i++){
@@ -472,22 +472,15 @@ public class PlansFragment extends Fragment {
             double tempTime = getTotalTime(locationRecordTemp, transportRecordTemp);
             double tempCost = getTotalCost(locationRecordTemp, transportRecordTemp);
 
-            if(tempCost > budget){
-                if(i != numberOfIterations - 1){
-                    continue;
-                } else {
-                    break;
-                }
-            } else {
-                if(tempTime < currentTime){
-                    // Update values
-                    currentTime = tempTime;
-                    currentCost = tempCost;
-                    locationRecord = Arrays.copyOf(locationRecordTemp, locationRecordTemp.length);
-                    transportRecord = Arrays.copyOf(transportRecordTemp, transportRecordTemp.length);
-                } else if (Math.exp(currentTime - tempTime / t) < Math.random()){
-                    continue;
-                }
+
+            if(tempTime < currentTime && tempCost <= budget){
+                // Update values
+                currentTime = tempTime;
+                currentCost = tempCost;
+                locationRecord = Arrays.copyOf(locationRecordTemp, locationRecordTemp.length);
+                transportRecord = Arrays.copyOf(transportRecordTemp, transportRecordTemp.length);
+            } else if (Math.exp(currentTime - tempTime / t) < Math.random()  || tempCost > budget){
+                continue;
             }
 
             Log.d("FastAlgo", "Current Time: " + Double.toString(currentTime));
@@ -500,15 +493,19 @@ public class PlansFragment extends Fragment {
         // After the simulation is completed, hopefully we found a decent solution
         // We may now print out the string
         String s = "";
-        for(int i = 0; i < locationRecord.length; i++){
-            if ((i + 1) < locationRecord.length){
-                s += locationRecord[i] + " " + transportRecord[i] + " to " + locationRecord[i+1] + "\n\n";
+
+        if(currentCost > budget) {
+            s = "Sorry, this trial found no solutions. Try Again!";
+        } else {
+            for (int i = 0; i < locationRecord.length; i++) {
+                if ((i + 1) < locationRecord.length) {
+                    s += locationRecord[i] + " " + transportRecord[i] + " to " + locationRecord[i + 1] + "\n\n";
+                }
             }
+
+            s += "\n\nCost: " + String.format("%.2f", currentCost) + " SGD";
+            s += "\nTime taken: " + String.format("%.2f", currentTime) + " minutes";
         }
-
-        s += "\n\nCost: " + String.format("%.2f", currentCost) + " SGD";
-        s += "\nTime taken: " + String.format("%.2f", currentTime) + " minutes";
-
         return s;
     }
 
@@ -536,6 +533,18 @@ public class PlansFragment extends Fragment {
             }
         }
         return output;
+    }
+
+    public int getNumIters(int length){
+        if(length < 3){
+            return 600;
+        } else if (length >= 3 && length < 5){
+            return 1000;
+        } else if(length > 5){
+            return length * 300 + 500;
+        }
+
+        return 0;
     }
 
 

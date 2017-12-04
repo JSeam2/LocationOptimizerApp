@@ -23,7 +23,7 @@
     <!-- Fragment Stuff -->
     <string name="fragment_select_info">Choose The Places You Want To Go! </string>
     <string name="fragment_select_info2">The Itinerary Will Start and End at Marina Bay Sands</string>
-    <string name="fragment_select_info3">You will need internet to see the locations. Try not to select more than 4 locations as your device might not cope.</string>
+    <string name="fragment_select_info3">You will need internet to see the locations. Try not to select more than 4 locations for brute search as your device might not cope.</string>
 
     <string name="fragment_map_info">See The Places You\'ve Selected</string>
     <string name="fragment_plan_info">Get a Plan!</string>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.locationoptimizer.MapFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="15dp">
 
     <TextView
         android:layout_width="match_parent"
