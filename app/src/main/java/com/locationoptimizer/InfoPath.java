@@ -94,24 +94,43 @@ class InfoPath implements Comparable<InfoPath>{
     public int compareTo(InfoPath a) {
         double b = this.getCost();
         double c = a.getCost();
+        double myTime = this.getTimeTaken();
+        double otherTime = a.getTimeTaken();
 
-
-        if (b == c){
+        if (myTime == otherTime){
             Log.d("SortFail", b + " Equals " + c);
-            if(this.TimeTaken == a.getTimeTaken()){
+            if(b == c){
                 return 0;
-            }else if(this.TimeTaken <= a.getTimeTaken()){
+            }else if(b <= c){
                 return -1;
             }else{
                 return 1;
             }
-        } else if(b <= c){
+        } else if(myTime <= otherTime){
             Log.d("SortFail", b + " less than " + c);
             return -1;
         } else {
             Log.d("SortFail", b + " more than " + c);
             return 1;
         }
+
+
+//        if (b == c){
+//            Log.d("SortFail", b + " Equals " + c);
+//            if(this.TimeTaken == a.getTimeTaken()){
+//                return 0;
+//            }else if(this.TimeTaken <= a.getTimeTaken()){
+//                return -1;
+//            }else{
+//                return 1;
+//            }
+//        } else if(b <= c){
+//            Log.d("SortFail", b + " less than " + c);
+//            return -1;
+//        } else {
+//            Log.d("SortFail", b + " more than " + c);
+//            return 1;
+//        }
     }
 
 }

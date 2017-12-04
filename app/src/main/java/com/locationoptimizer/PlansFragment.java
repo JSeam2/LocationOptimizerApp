@@ -259,7 +259,7 @@ public class PlansFragment extends Fragment {
         //checked if this is sorting in correct order or in reverse (once cost fetching is done)
 
 
-        Collections.sort(allPossiblePaths, Collections.reverseOrder());
+
 
         Log.d("CheckCostSorter", "FirstNow----------");
         int countRemoved = 0;
@@ -276,6 +276,16 @@ public class PlansFragment extends Fragment {
         }
 //        Log.d("ArrayOut", allPossiblePaths.getoString());
 
+//        Collections.sort(allPossiblePaths, Collections.reverseOrder());
+        Collections.sort(allPossiblePaths);
+        /// debug purpose
+
+
+
+
+
+        // debug end
+
         settingBestOp();
 
     }
@@ -288,6 +298,7 @@ public class PlansFragment extends Fragment {
             Log.d("CheckCostSorter", "Cost: "+ i.getCost() + " and Time: " + i.getTimeTaken());
             if (i.getCost() <= budget){
                 bestOp = i;
+//                double currentCost = bestOp.getCost();
                 break;
             }
         }
