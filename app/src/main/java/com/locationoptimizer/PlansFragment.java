@@ -398,7 +398,6 @@ public class PlansFragment extends Fragment {
         String start = "Marina Bay Sands";
         String end = "Marina Bay Sands";
         ArrayList<String> inBetween = selected;
-        double contraintBudget = budget;
 
         String[] transportOption = {"Bus_Train", "Walk", "Taxi"};
 
@@ -418,12 +417,7 @@ public class PlansFragment extends Fragment {
         // Simulated Annealing Variables to manually adjust till we get decent performance
         double t = 10000;   // Temperature
         double coolingRate = 0.005;
-        double numberOfIterations;
-        if(selected.size() < 4) {
-            numberOfIterations = 800;
-        } else {
-            numberOfIterations = 1200;
-        }
+        double numberOfIterations = selected.size() * 300 + 500;
 
         // Initialize state by setting inBetween in its current order into the locationRecord
         for(int i = 0; i < locationRecord.length; i++){
@@ -448,13 +442,14 @@ public class PlansFragment extends Fragment {
 
         // Get currentTime and currentCost based on initial values
         double currentTime = getTotalTime(locationRecord, transportRecord);
-        double currentCost = getTotalTime(locationRecord, transportRecord);
+        double currentCost = getTotalCost(locationRecord, transportRecord);
         Log.d("FastAlgo", "Current Time: " + Double.toString(currentTime));
         Log.d("FastAlgo", "Current Cost: " + Double.toString(currentCost));
 
 
         // Main simulation loop
         for(int i = 0; i < numberOfIterations; i++){
+
             // Scramble locationsRecordTemp
             Collections.shuffle(inBetween);
             for(int j = 0; j < locationRecordTemp.length; j++){
@@ -478,7 +473,11 @@ public class PlansFragment extends Fragment {
             double tempCost = getTotalCost(locationRecordTemp, transportRecordTemp);
 
             if(tempCost > budget){
-                continue;
+                if(i != numberOfIterations - 1){
+                    continue;
+                } else {
+                    break;
+                }
             } else {
                 if(tempTime < currentTime){
                     // Update values
