@@ -262,18 +262,18 @@ public class PlansFragment extends Fragment {
 
 
         Log.d("CheckCostSorter", "FirstNow----------");
-        int countRemoved = 0;
-        for(int c = 0; c < allPossiblePaths.size()-countRemoved; c++){
-            InfoPath i = allPossiblePaths.get(c);
-            for(int b = 0; b < allPossiblePaths.size()-countRemoved; b++){
-                InfoPath a = allPossiblePaths.get(b);
-                if (a.getCost() > i.getCost() && a.getTimeTaken() > i.getTimeTaken()){
-                    //a has a higher cost and takes more time so remove a
-                    allPossiblePaths.remove(a);
-                    countRemoved += 1;
-                }
-            }
-        }
+//        int countRemoved = 0;
+//        for(int c = 0; c < allPossiblePaths.size()-countRemoved; c++){
+//            InfoPath i = allPossiblePaths.get(c);
+//            for(int b = 0; b < allPossiblePaths.size()-countRemoved; b++){
+//                InfoPath a = allPossiblePaths.get(b);
+//                if (a.getCost() >= i.getCost() && a.getTimeTaken() > i.getTimeTaken()){
+//                    //a has a higher cost and takes more time so remove a
+//                    allPossiblePaths.remove(a);
+//                    countRemoved += 1;
+//                }
+//            }
+//        }
 //        Log.d("ArrayOut", allPossiblePaths.getoString());
 
 //        Collections.sort(allPossiblePaths, Collections.reverseOrder());
